@@ -6,6 +6,7 @@ public class GridBehavior : MonoBehaviour
 {
 
     [SerializeField] private float gridSize = 1;
+    private GameObject[] enemies;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,13 @@ public class GridBehavior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && ValidMoveForward())
         {
             transform.position += transform.forward * gridSize;
+            MakeMonsterMove();
         }
 
         if (Input.GetKeyDown(KeyCode.S) && ValidMoveBackward())
         {
             transform.position -= transform.forward * gridSize;
+            MakeMonsterMove();
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -71,6 +74,17 @@ public class GridBehavior : MonoBehaviour
         {
             Debug.Log("Valid move.");
             return true;
+        }
+    }
+
+    private void MakeMonsterMove()
+    {
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Debug.Log("Found enemies.");
+        for(int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].gameObject.GetComponent<MonsterGridBehavior>().MonsterMovement();
+            Debug.Log("Monster moved.");
         }
     }
 }
