@@ -11,6 +11,8 @@ public class GridBehavior : MonoBehaviour
     [SerializeField] private float cameraXMin, cameraXMax, cameraYMin, cameraYMax, cameraSpeedX, cameraSpeedY;
     private float cameraX, cameraY;
     private GameObject[] enemies;
+    public bool isHolding = false;
+    public int counter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -23,15 +25,23 @@ public class GridBehavior : MonoBehaviour
     {
         CameraRotation();
         GridMovement();
+        Debug.Log("Current turn: " + counter);
     }
 
     private void GridMovement()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            MakeMonsterMove();
+            counter++;
+        }
+
         if (Input.GetKeyDown(KeyCode.W) && ValidMoveForward())
         {
             player.transform.position += player.transform.forward * gridSize;
             setHeightFromGround();
             MakeMonsterMove();
+            counter++;
         }
 
         if (Input.GetKeyDown(KeyCode.S) && ValidMoveBackward())
@@ -39,6 +49,7 @@ public class GridBehavior : MonoBehaviour
             player.transform.position -= player.transform.forward * gridSize;
             setHeightFromGround();
             MakeMonsterMove();
+            counter++;
         }
 
         if (Input.GetKeyDown(KeyCode.A))
